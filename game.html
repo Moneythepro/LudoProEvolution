@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ludo Pro Evolution — Game</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <base href="/LudoProEvolution/">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="index.html">← Home</a>
+    <h1>Game</h1>
+    <a class="btn small" href="lobby.html">Lobby</a>
+  </header>
+
+  <main class="layout-game">
+    <section class="board-area card">
+      <div id="board-wrap" class="board-wrap">
+        <canvas id="board" width="800" height="800"></canvas>
+      </div>
+      <div class="hud">
+        <div id="turnBanner">Turn: —</div>
+        <div id="rollBanner">Roll: —</div>
+      </div>
+    </section>
+
+    <aside class="sidepanel card">
+      <h3>Controls</h3>
+      <div class="row">
+        <button id="btnRoll" class="btn">Roll 🎲</button>
+        <button id="btnUndo" class="btn">Undo</button>
+      </div>
+
+      <h3>Settings</h3>
+      <label>Players
+        <select id="playerCount">
+          <option>2</option><option>3</option><option>4</option><option>5</option><option selected>6</option>
+        </select>
+      </label>
+      <label>Tokens per player
+        <select id="tokenCount"><option>1</option><option>2</option><option selected>4</option></select>
+      </label>
+
+      <h3>Save</h3>
+      <div class="row">
+        <button id="btnSave" class="btn">Save</button>
+        <button id="btnLoad" class="btn">Load</button>
+      </div>
+
+      <h3>Chat</h3>
+      <div id="chatLog" class="chatlog"></div>
+      <form id="chatForm"><input id="chatInput" placeholder="Message…"><button>Send</button></form>
+    </aside>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js', { scope: '/LudoProEvolution/' });
+    }
+  </script>
+</body>
+</html>
