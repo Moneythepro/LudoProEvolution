@@ -2,98 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Ludo Pro Evolution — PWA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#4CAF50" />
-  <base href="/LudoProEvolution/" />
+  <title>Ludo Pro Evolution — Home</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <base href="/LudoProEvolution/">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icons/icon-192.png" />
-  <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>🎲 Ludo Pro Evolution</h1>
+  <header class="topbar">
+    <h1>Ludo Pro Evolution</h1>
   </header>
 
-  <main>
-    <!-- Game Board -->
-    <div class="board-wrap">
-      <canvas id="board" width="1024" height="1024" aria-label="Ludo board" role="img"></canvas>
-    </div>
-
-    <!-- Dice -->
-    <div id="dice" tabindex="0" class="dice" role="button" aria-label="Roll dice">
-      <div class="cube">
-        <div class="face front">1</div>
-        <div class="face back">6</div>
-        <div class="face right">3</div>
-        <div class="face left">4</div>
-        <div class="face top">5</div>
-        <div class="face bottom">2</div>
-      </div>
-    </div>
-
-    <!-- HUD -->
-    <div id="hud">
-      <div id="turnBanner">Turn: —</div>
-      <div id="rollBanner">Roll: —</div>
-    </div>
-
-    <!-- Controls -->
-    <section id="controls">
-      <div>
-        <label>Players:
-          <input type="number" id="playerCount" value="6" min="2" max="6">
-        </label>
-        <label>Tokens/Player:
-          <input type="number" id="tokenCount" value="4" min="1" max="6">
-        </label>
-      </div>
-      <div>
-        <label><input type="checkbox" id="vMustSix" checked> Must Roll Six to Start</label>
-        <label><input type="checkbox" id="vBonusSix" checked> Bonus Roll on Six</label>
-        <label><input type="checkbox" id="vExactHome" checked> Exact Count to Home</label>
-        <label><input type="checkbox" id="vSafeStars" checked> Safe Stars</label>
-      </div>
-      <div class="buttons">
-        <button id="btnQuickPlay">Quick Play</button>
-        <button id="btnToggle3D">Toggle 3D</button>
-        <button id="btnSave">💾 Save</button>
-        <button id="btnLoad">📂 Load</button>
-        <button id="btnRules">📜 Rules</button>
-        <button id="btnMute" aria-pressed="false">🔊</button>
+  <main class="center">
+    <section class="card">
+      <h2>Play</h2>
+      <p>Quick links to separate pages. UI split so each page is simple.</p>
+      <div class="row">
+        <a class="btn" href="game.html">▶️ Play Game</a>
+        <a class="btn" href="lobby.html">🧭 Lobby</a>
+        <a class="btn" href="rules.html">📜 Rules</a>
       </div>
     </section>
 
-    <!-- Seats -->
-    <section id="seats"></section>
-
-    <!-- Chat -->
-    <section id="chat">
-      <div id="chatLog"></div>
-      <form id="chatForm">
-        <input type="text" id="chatInput" placeholder="Type message...">
-        <button type="submit">Send</button>
-      </form>
+    <section class="card">
+      <h2>About</h2>
+      <p>Offline-first PWA Ludo (6 players). Works on GitHub Pages. For advanced features open the Lobby and Game pages.</p>
     </section>
   </main>
 
-  <!-- Rules Dialog -->
-  <dialog id="dlgRules">
-    <h2>Game Rules</h2>
-    <p>Classic Ludo rules with selected variants applied.</p>
-    <button id="btnCloseRules">Close</button>
-  </dialog>
-
-  <!-- Main Game Script -->
-  <script type="module" src="js/app.js"></script>
-
-  <!-- Service Worker -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js', { scope: '/LudoProEvolution/' });
-    }
-  </script>
+  <footer class="footer">
+    <small>Hosted on GitHub Pages — add to home screen to install.</small>
+  </footer>
 </body>
 </html>
