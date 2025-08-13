@@ -1,64 +1,23 @@
-// Minimal offline WebRTC DataChannel using manual signaling via textarea.
-const btnHost = document.getElementById("btnHost");
-const btnJoin = document.getElementById("btnJoin");
-const signalBox = document.getElementById("signalLocal");
-const btnMakeOffer = document.getElementById("btnMakeOffer");
-const btnAcceptOffer = document.getElementById("btnAcceptOffer");
-const chatLog = document.getElementById("chatLog");
+// minimal manual signaling WebRTC scaffold used from Lobby page
+const signalBox = document.getElementById?.('signalLocal');
+const log = (m)=>{ if(signalBox) signalBox.value = (signalBox.value ? signalBox.value + '\n' : '') + m; };
+let pc=null, dc=null;
 
-let pc = null, dc = null;
-
-function log(msg) { chatLog.innerHTML += `<div style="opacity:.8">${msg}</div>`; chatLog.scrollTop = chatLog.scrollHeight; }
-
-function newPC() {
-  pc = new RTCPeerConnection({
-    // Intentionally no STUN/TURN to keep fully offline; will only connect on local network with manual exchange.
-    iceServers: []
-  });
-  pc.onicecandidate = (e) => {
-    if (e.candidate) return;
-    // When gathering done, show local description to copy
-    signalBox.value = btoa(JSON.stringify(pc.localDescription));
-  };
-  pc.ondatachannel = (e)=> {
-    dc = e.channel;
-    wireDC();
-  };
+export async function makeOfferToBox(){
+  pc = new RTCPeerConnection({iceServers:[]});
+  dc = pc.createDataChannel('ludo');
+  dc.onopen = ()=>log('DC open');
+  dc.onmessage = e=>log('Peer: '+e.data);
+  pc.onicecandidate = ()=>{ if(pc.localDescription) log(btoa(JSON.stringify(pc.localDescription))); };
+  await pc.setLocalDescription(await pc.createOffer());
 }
 
-function wireDC() {
-  dc.onopen = ()=>log("<em>DataChannel open</em>");
-  dc.onmessage = (e)=>log(`<strong>Peer:</strong> ${e.data}`);
-}
-
-btnHost.addEventListener("click", async ()=>{
-  newPC();
-  dc = pc.createDataChannel("ludo");
-  wireDC();
-  await pc.setLocalDescription(await pc.createOffer());
-  log("<em>Offer created. Copy & send it to peer.</em>");
-});
-
-btnJoin.addEventListener("click", ()=>{
-  newPC();
-  log("<em>Paste host offer and click Accept Offer.</em>");
-});
-
-btnMakeOffer.addEventListener("click", async ()=>{
-  if (!pc) { newPC(); }
-  await pc.setLocalDescription(await pc.createOffer());
-  log("<em>Offer created. Copy & send it to peer.</em>");
-});
-
-btnAcceptOffer.addEventListener("click", async ()=>{
-  if (!pc) newPC();
-  const remote = JSON.parse(atob(signalBox.value.trim()));
+export async function acceptRemoteBox(encoded){
+  if(!pc) pc = new RTCPeerConnection({iceServers:[]});
+  const remote = JSON.parse(atob(encoded));
   await pc.setRemoteDescription(remote);
-  if (remote.type === "offer") {
+  if(remote.type==='offer'){
     await pc.setLocalDescription(await pc.createAnswer());
-    signalBox.value = btoa(JSON.stringify(pc.localDescription));
-    log("<em>Answer created. Send this back to host.</em>");
-  } else {
-    log("<em>Remote answer set. Connecting…</em>");
+    log(btoa(JSON.stringify(pc.localDescription)));
   }
-});
+}
