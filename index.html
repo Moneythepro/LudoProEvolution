@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Ludo 6 — PWA</title>
+  <title>Ludo Pro Evolution — PWA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0ea5e9" />
+  <meta name="theme-color" content="#4CAF50" />
   <base href="/LudoProEvolution/" />
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon-192.png" />
@@ -12,95 +12,84 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="topbar">
-    <h1>Ludo 6</h1>
-    <nav class="controls">
-      <button id="btnQuickPlay" title="Start quick game">Quick Play</button>
-      <button id="btnToggle3D" title="Toggle 3D tilt">3D View</button>
-      <button id="btnSave" title="Save game">Save</button>
-      <button id="btnLoad" title="Load game">Load</button>
-      <button id="btnInstall" hidden>Install</button>
-      <button id="btnHost" title="Host local room">Host</button>
-      <button id="btnJoin" title="Join local room">Join</button>
-      <button id="btnRules">Rules</button>
-      <button id="btnMute" aria-pressed="false">🔊</button>
-    </nav>
+  <header>
+    <h1>🎲 Ludo Pro Evolution</h1>
   </header>
 
-  <main id="app">
-    <section class="board-wrap">
+  <main>
+    <!-- Game Board -->
+    <div class="board-wrap">
       <canvas id="board" width="1024" height="1024" aria-label="Ludo board" role="img"></canvas>
-      <div id="dice" class="dice" role="button" aria-label="Roll dice" tabindex="0">
-        <div class="cube">
-          <div class="face one">•</div>
-          <div class="face two">• •</div>
-          <div class="face three">• • •</div>
-          <div class="face four">• •<br>• •</div>
-          <div class="face five">• •<br> • <br>• •</div>
-          <div class="face six">• • •<br>• • •</div>
-        </div>
+    </div>
+
+    <!-- Dice -->
+    <div id="dice" tabindex="0" class="dice" role="button" aria-label="Roll dice">
+      <div class="cube">
+        <div class="face front">1</div>
+        <div class="face back">6</div>
+        <div class="face right">3</div>
+        <div class="face left">4</div>
+        <div class="face top">5</div>
+        <div class="face bottom">2</div>
       </div>
-      <div class="hud">
-        <div id="turnBanner">Turn: —</div>
-        <div id="rollBanner">Roll: —</div>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud">
+      <div id="turnBanner">Turn: —</div>
+      <div id="rollBanner">Roll: —</div>
+    </div>
+
+    <!-- Controls -->
+    <section id="controls">
+      <div>
+        <label>Players:
+          <input type="number" id="playerCount" value="6" min="2" max="6">
+        </label>
+        <label>Tokens/Player:
+          <input type="number" id="tokenCount" value="4" min="1" max="6">
+        </label>
+      </div>
+      <div>
+        <label><input type="checkbox" id="vMustSix" checked> Must Roll Six to Start</label>
+        <label><input type="checkbox" id="vBonusSix" checked> Bonus Roll on Six</label>
+        <label><input type="checkbox" id="vExactHome" checked> Exact Count to Home</label>
+        <label><input type="checkbox" id="vSafeStars" checked> Safe Stars</label>
+      </div>
+      <div class="buttons">
+        <button id="btnQuickPlay">Quick Play</button>
+        <button id="btnToggle3D">Toggle 3D</button>
+        <button id="btnSave">💾 Save</button>
+        <button id="btnLoad">📂 Load</button>
+        <button id="btnRules">📜 Rules</button>
+        <button id="btnMute" aria-pressed="false">🔊</button>
       </div>
     </section>
 
-    <aside class="sidebar">
-      <h2>Lobby</h2>
-      <div id="seats"></div>
-      <div class="options">
-        <label>Players:
-          <select id="playerCount">
-            <option>2</option><option>3</option><option>4</option><option>5</option><option selected>6</option>
-          </select>
-        </label>
-        <label>Tokens per player:
-          <select id="tokenCount">
-            <option selected>4</option><option>3</option><option>2</option><option>1</option>
-          </select>
-        </label>
-        <fieldset>
-          <legend>Variants</legend>
-          <label><input type="checkbox" id="vMustSix" checked> Must roll 6 to leave home</label>
-          <label><input type="checkbox" id="vBonusSix" checked> Bonus roll on 6 (max 3)</label>
-          <label><input type="checkbox" id="vExactHome" checked> Exact roll to enter home</label>
-          <label><input type="checkbox" id="vSafeStars" checked> Safe star tiles</label>
-        </fieldset>
-      </div>
-      <hr>
-      <h2>Local Room</h2>
-      <textarea id="signalLocal" placeholder="Offer/Answer text for manual copy/paste"></textarea>
-      <div class="row">
-        <button id="btnMakeOffer">Make Offer</button>
-        <button id="btnAcceptOffer">Accept Offer</button>
-      </div>
-      <p class="hint">Fully offline WebRTC via manual copy/paste. (QR optional)</p>
-      <hr>
-      <h2>Chat</h2>
-      <div id="chatLog" class="chatlog"></div>
+    <!-- Seats -->
+    <section id="seats"></section>
+
+    <!-- Chat -->
+    <section id="chat">
+      <div id="chatLog"></div>
       <form id="chatForm">
-        <input id="chatInput" placeholder="Message…" autocomplete="off"/>
-        <button>Send</button>
+        <input type="text" id="chatInput" placeholder="Type message...">
+        <button type="submit">Send</button>
       </form>
-    </aside>
+    </section>
   </main>
 
+  <!-- Rules Dialog -->
   <dialog id="dlgRules">
-    <h3>Rules (classic + variants)</h3>
-    <ul>
-      <li>Roll to move. 6 lets you start from home (variant) and grants extra roll (up to 3).</li>
-      <li>Captures send the opponent token to its home.</li>
-      <li>Safe stars protect tokens from capture (variant).</li>
-      <li>Exact roll required to enter home stretch (variant).</li>
-      <li>First to bring all tokens home wins; others rank 2nd–6th.</li>
-    </ul>
+    <h2>Game Rules</h2>
+    <p>Classic Ludo rules with selected variants applied.</p>
     <button id="btnCloseRules">Close</button>
   </dialog>
 
-  <!-- Single entry point as a module -->
+  <!-- Main Game Script -->
   <script type="module" src="js/app.js"></script>
 
+  <!-- Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js', { scope: '/LudoProEvolution/' });
