@@ -2,6 +2,8 @@ import { mulberry32, seededInt, saveJSON, loadJSON } from "./util-seed.js";
 import { buildBoardLayout, initialState, legalMoves, applyMove, nextPlayer, COLORS } from "./rules.js";
 import { Board2D } from "./board-2d.js";
 import { chooseAIMove } from "./ai.js";
+import "./net-webrtc.js";
+import "./pwa-install.js";
 
 // ---- State ----
 const layout = buildBoardLayout();
@@ -75,15 +77,15 @@ document.getElementById("btnQuickPlay").addEventListener("click", ()=>{
   updateHUD();
 });
 
-// Dice roll animation (CSS cube)
+// Dice roll animation
 function spinCubeToFace(face) {
   const cube = diceEl.querySelector(".cube");
-  const randX = 360 * 2 + (face===1?0:60*face); // arbitrary but fun
+  const randX = 360 * 2 + (face===1?0:60*face);
   const randY = 360 * 3 + (face===6?0:45*face);
   cube.style.transform = `rotateX(${randX}deg) rotateY(${randY}deg)`;
 }
 
-// Roll + move (human or AI)
+// Roll + move
 async function doTurn() {
   const die = seededInt(rng, 1, 6);
   spinCubeToFace(die);
@@ -105,7 +107,6 @@ async function doTurn() {
     chosen = chooseAIMove(state, layout, rng, moves);
     await new Promise(r=>setTimeout(r, 400));
   } else {
-    // wait for a click on one of the tokens in "moves"
     chosen = await waitForTokenClick(moves);
   }
 
@@ -154,7 +155,7 @@ const dlgRules = document.getElementById("dlgRules");
 document.getElementById("btnRules").addEventListener("click", ()=>dlgRules.showModal());
 document.getElementById("btnCloseRules").addEventListener("click", ()=>dlgRules.close());
 
-// Mute toggle (placeholder)
+// Mute toggle
 const btnMute = document.getElementById("btnMute");
 btnMute.addEventListener("click", ()=>{
   const pressed = btnMute.getAttribute("aria-pressed")==="true";
@@ -162,7 +163,7 @@ btnMute.addEventListener("click", ()=>{
   btnMute.textContent = pressed ? "🔊" : "🔇";
 });
 
-// Chat (local only now)
+// Chat
 const chatLog = document.getElementById("chatLog");
 document.getElementById("chatForm").addEventListener("submit", (e)=>{
   e.preventDefault();
