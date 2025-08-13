@@ -6,19 +6,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <base href="/LudoProEvolution/">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
   <header class="topbar">
     <a class="back" href="index.html">← Home</a>
     <h1>Game</h1>
-    <a class="btn small" href="lobby.html">Lobby</a>
+    <a class="btn small" href="multiplayer.html">Lobby</a>
   </header>
 
   <main class="layout-game">
     <section class="board-area card">
       <div id="board-wrap" class="board-wrap">
-        <canvas id="board" width="800" height="800"></canvas>
+        <canvas id="board" width="800" height="800" aria-label="Ludo board"></canvas>
       </div>
       <div class="hud">
         <div id="turnBanner">Turn: —</div>
@@ -33,13 +33,11 @@
         <button id="btnUndo" class="btn">Undo</button>
       </div>
 
-      <h3>Settings</h3>
+      <h3>Setup</h3>
       <label>Players
-        <select id="playerCount">
-          <option>2</option><option>3</option><option>4</option><option>5</option><option selected>6</option>
-        </select>
+        <select id="playerCount"><option>2</option><option>3</option><option>4</option><option>5</option><option selected>6</option></select>
       </label>
-      <label>Tokens per player
+      <label>Tokens
         <select id="tokenCount"><option>1</option><option>2</option><option selected>4</option></select>
       </label>
 
@@ -55,7 +53,7 @@
     </aside>
   </main>
 
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="assets/js/game-app.js"></script>
 
   <script>
     if ('serviceWorker' in navigator) {
