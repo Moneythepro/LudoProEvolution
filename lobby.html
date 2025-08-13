@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ludo Pro Evolution — Lobby</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <base href="/LudoProEvolution/">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="index.html">← Home</a>
+    <h1>Lobby</h1>
+  </header>
+
+  <main class="center">
+    <section class="card">
+      <h2>Manual WebRTC (Offline)</h2>
+      <p>Create an offer, copy the text, give it to a nearby peer, paste their answer back. This is a manual, serverless flow.</p>
+      <textarea id="signalLocal" placeholder="Offer/Answer text..."></textarea>
+      <div class="row">
+        <button id="btnMakeOffer" class="btn">Make Offer</button>
+        <button id="btnAcceptOffer" class="btn">Accept Offer</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Seats</h2>
+      <div id="seats" class="seats-grid"></div>
+    </section>
+  </main>
+
+  <script type="module" src="js/net-webrtc.js"></script>
+</body>
+</html>
