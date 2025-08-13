@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ludo Pro Evolution — Multiplayer</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <base href="/LudoProEvolution/">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="index.html">← Home</a>
+    <h1>Multiplayer (local)</h1>
+  </header>
+
+  <main class="center">
+    <section class="card">
+      <h2>Manual signaling</h2>
+      <p>Create an offer on Host, copy the base64 string, paste into Join, accept, exchange answer back.</p>
+      <div class="row">
+        <button id="btnHost" class="btn">Host (Create Offer)</button>
+        <button id="btnJoin" class="btn">Join (Paste Offer)</button>
+      </div>
+
+      <label>Signal (copy/paste):</label>
+      <textarea id="signalBox" placeholder="Offer/Answer goes here"></textarea>
+
+      <h3>Log</h3>
+      <div id="signalLog" class="chatlog"></div>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/multiplayer.js"></script>
+</body>
+</html>
