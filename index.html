@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ludo 6 — PWA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <!-- IMPORTANT for GitHub Pages: base must match repo path -->
+  <base href="/LudoProEvolution/" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Ludo 6</h1>
+    <nav class="controls">
+      <button id="btnQuickPlay" title="Start quick game">Quick Play</button>
+      <button id="btnToggle3D" title="Toggle 3D tilt">3D View</button>
+      <button id="btnSave" title="Save game">Save</button>
+      <button id="btnLoad" title="Load game">Load</button>
+      <button id="btnInstall" hidden>Install</button>
+      <button id="btnHost" title="Host local room">Host</button>
+      <button id="btnJoin" title="Join local room">Join</button>
+      <button id="btnRules">Rules</button>
+      <button id="btnMute" aria-pressed="false">🔊</button>
+    </nav>
+  </header>
+
+  <main id="app">
+    <section class="board-wrap">
+      <canvas id="board" width="1024" height="1024" aria-label="Ludo board" role="img"></canvas>
+      <div id="dice" class="dice" role="button" aria-label="Roll dice" tabindex="0">
+        <div class="cube">
+          <div class="face one">•</div>
+          <div class="face two">• •</div>
+          <div class="face three">• • •</div>
+          <div class="face four">• •<br>• •</div>
+          <div class="face five">• •<br> • <br>• •</div>
+          <div class="face six">• • •<br>• • •</div>
+        </div>
+      </div>
+      <div class="hud">
+        <div id="turnBanner">Turn: —</div>
+        <div id="rollBanner">Roll: —</div>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <h2>Lobby</h2>
+      <div id="seats"></div>
+      <div class="options">
+        <label>Players:
+          <select id="playerCount">
+            <option>2</option><option>3</option><option>4</option><option>5</option><option selected>6</option>
+          </select>
+        </label>
+        <label>Tokens per player:
+          <select id="tokenCount">
+            <option selected>4</option><option>3</option><option>2</option><option>1</option>
+          </select>
+        </label>
+        <fieldset>
+          <legend>Variants</legend>
+          <label><input type="checkbox" id="vMustSix" checked> Must roll 6 to leave home</label>
+          <label><input type="checkbox" id="vBonusSix" checked> Bonus roll on 6 (max 3)</label>
+          <label><input type="checkbox" id="vExactHome" checked> Exact roll to enter home</label>
+          <label><input type="checkbox" id="vSafeStars" checked> Safe star tiles</label>
+        </fieldset>
+      </div>
+      <hr>
+      <h2>Local Room</h2>
+      <textarea id="signalLocal" placeholder="Offer/Answer text for manual copy/paste"></textarea>
+      <div class="row">
+        <button id="btnMakeOffer">Make Offer</button>
+        <button id="btnAcceptOffer">Accept Offer</button>
+      </div>
+      <p class="hint">Fully offline WebRTC via manual copy/paste. (QR optional)</p>
+      <hr>
+      <h2>Chat</h2>
+      <div id="chatLog" class="chatlog"></div>
+      <form id="chatForm">
+        <input id="chatInput" placeholder="Message…" autocomplete="off"/>
+        <button>Send</button>
+      </form>
+    </aside>
+  </main>
+
+  <dialog id="dlgRules">
+    <h3>Rules (classic + variants)</h3>
+    <ul>
+      <li>Roll to move. 6 lets you start from home (variant) and grants extra roll (up to 3).</li>
+      <li>Captures send the opponent token to its home.</li>
+      <li>Safe stars protect tokens from capture (variant).</li>
+      <li>Exact roll required to enter home stretch (variant).</li>
+      <li>First to bring all tokens home wins; others rank 2nd–6th.</li>
+    </ul>
+    <button id="btnCloseRules">Close</button>
+  </dialog>
+
+  <script src="js/util-seed.js"></script>
+  <script src="js/rules.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/board-2d.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/net-webrtc.js"></script>
+  <script src="js/pwa-install.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js', { scope: '/LudoProEvolution/' });
+    }
+  </script>
+</body>
+</html>
